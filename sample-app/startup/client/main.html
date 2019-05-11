@@ -1,0 +1,25 @@
+<head>
+  <title>meteor-auth-demo</title>
+</head>
+
+<body>
+  {{> main }}
+</body>
+
+<template name="main">
+  <h1>meteor-auth-demo</h1>
+  <h3>
+    Logged-in user:
+    {{#if currentUser}}
+    {{ currentUser.username }}
+    {{else}}
+    none
+    {{/if}}
+  </h3>
+  <p>
+    <button disabled="{{ btnDisabled }}">{{#if currentUser}}Logout{{else}}Login with Discourse{{/if}}</button>
+  </p>
+  <p>
+    (if a Discourse session is open in another tab of the browser, the login dialog won't display and the login will be immediate)
+  </p>
+</template>

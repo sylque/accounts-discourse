@@ -1,0 +1,17 @@
+{
+  "$schema": "https://sylque.github.io/dcs-website-schema/json/schema.json",
+
+  "websiteName": "meteor_auth_demo",
+
+  "dcsTag": {
+    "maxPageNameLength": 6,
+    "maxTriggerIdLength": 9,
+    "forceLowercase": true
+  },
+
+  "dynamicPages": {
+    "url": "/",
+    "namePrefix": "m_",
+    "homePageName": "m_home"
+  }
+}

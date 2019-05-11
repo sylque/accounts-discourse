@@ -1,0 +1,19 @@
+{
+  "name": "meteor-auth-demo",
+  "private": true,
+  "scripts": {
+    "start": "meteor run",
+    "visualize": "meteor --production --extra-packages bundle-visualizer"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.3.4",
+    "dcs-client": "^1.0.12",
+    "meteor-node-stubs": "^0.4.1"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "startup/client/main.js",
+      "server": "startup/server/main.js"
+    }
+  }
+}
