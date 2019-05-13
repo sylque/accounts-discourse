@@ -26,10 +26,10 @@ ServiceConfiguration.configurations.upsert(
       // The same secret you have set in Discourse SSO settings
       secret: 'imVEzm9cUiTj0w6AfkedCQGUZuUfTizlA7',
 
-      // If set to true, users will have to log-in again each time they have 
+      // If set to true, users will have to log-in again each time they have
       // closed their browser. Default is false.
-      // This is a client-side feature, designed to provide a better UX in 
-      // certain use cases. If you are seeking a security feature, use the 
+      // This is a client-side feature, designed to provide a better UX in
+      // certain use cases. If you are seeking a security feature, use the
       // official Accounts.config({ loginExpirationInDays: 1}) instead.
       oneTimeLogin: true
     }
@@ -39,7 +39,8 @@ ServiceConfiguration.configurations.upsert(
 
 ## Usage
 
-To login with Discourse, load your application with a `discourse-login=true` query param:
+To login with Discourse, load your application with a `discourse-login=true`
+query param:
 
 ```javascript
 // imports/ui/myNavbar.js
@@ -58,15 +59,21 @@ Template.myNavbar.events({
 Notice that, if a Discourse session is open in another tab of the browser, the
 Discourse login dialog won't show up and the login will be immediate.
 
-***Wait, this is weird, why not just provide a `loginWithDiscourse()` 
-function?!***
+**_Wait, this is weird! Why not just provide a `loginWithDiscourse()`
+function?_**
 
 Advantages of the query param approach:
 
-1. By design, Discourse SSO requires a page reload. A `loginWithDiscourse()` function would have to do a `location = something` anyway. I prefer to put this constraint in plain sight.
-2. If, for any reason, you need to trigger the SSO login immediately when you launch the application, this approach will save you a full extra app loading/initialization. 
-     
-For example, this is how we use the package in [Docuss](https://github.com/sylque/docuss), a Discourse plugin that displays a Meteor app in an iframe:
+1. By design, Discourse SSO requires a page reload. A `loginWithDiscourse()`
+   function would have to do a `location = something` anyway. I prefer to put
+   this constraint in plain sight.
+2. If, for any reason, you need to trigger the SSO login immediately when you
+   launch the application, this approach will save you a full extra app
+   loading/initialization.
+
+For example, this is how we use the package in
+[Docuss](https://github.com/sylque/docuss), a Discourse plugin that displays a
+Meteor app in an iframe:
 
 ```javascript
 // discoursePluginInit.js
@@ -83,6 +90,48 @@ if (Discourse.User.current()) {
 $('#iframePlaceholder').replaceWith(`<iframe src="${src}"></iframe>`)
 ```
 
+## Field Added to Meteor.users
+
+When using this package, after logging in, each user has this additional
+`services.discourse` field:
+
+```javascript
+{
+  id, // Discourse user id (number)
+  username, // Discourse username (string)
+  name, // Full name from the Discourse user profile (string)
+  groups, // Coma-separated list of groups (string)
+  email, // Email address (string)
+  admin, // true if the user is admin (boolean)
+  moderator // true if the user is moderator (boolean)
+}
+```
+
+No other fields are added or updated. If you need a service-agnostic `user.name` field, use this server-side code:
+
+```javascript
+import { Accounts } from 'meteor/accounts-base'
+import { Meteor } from 'meteor/meteor'
+
+// Add an additional service-agnostic "name" field
+Accounts.onLogin(data => {
+  if (data.type === 'discourse') {
+    const discourse = data.user.services.discourse
+    const name = discourse.name || discourse.username
+    Meteor.users.update(data.user._id, { $set: { name } })
+  }
+})
+
+// Publish the additional "name" field
+Meteor.publish(null, function() {
+  return this.userId
+    ? Meteor.users.find(this.userId, { fields: { name: 1 } })
+    : this.ready()
+})
+```
+
+Remember that you should never use the `profile` field of Meteor.users. See why
+[here](https://guide.meteor.com/accounts.html#dont-use-profile).
 
 ## Alternative Packages
 

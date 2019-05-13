@@ -25,3 +25,27 @@ WebApp.rawConnectHandlers.use('/', function(req, res, next) {
 })
 
 //------------------------------------------------------------------------------
+
+import { Accounts } from 'meteor/accounts-base'
+import { Meteor } from 'meteor/meteor'
+
+// Set an additional service-agnostic "name" field, so that we don't need to use
+// user.services.discourse.name || user.services.discourse.username everywhere
+// Remember that you should never use the "profile" field of Meteor.users. See:
+// https://guide.meteor.com/accounts.html#dont-use-profile
+Accounts.onLogin(data => {
+  if (data.type === 'discourse') {
+    const discourse = data.user.services.discourse
+    const name = discourse.name || discourse.username
+    Meteor.users.update(data.user._id, { $set: { name } })
+  }
+})
+
+// Publish the additional "name" fied
+Meteor.publish(null, function() {
+  return this.userId
+    ? Meteor.users.find(this.userId, { fields: { name: 1 } })
+    : this.ready()
+})
+
+//------------------------------------------------------------------------------
