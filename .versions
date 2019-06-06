@@ -50,7 +50,7 @@ service-configuration@1.0.11
 sha@1.0.9
 socket-stream-client@0.2.2
 srp@1.0.12
-sylque:accounts-discourse@0.0.3
+sylque:accounts-discourse@0.0.4
 tracker@1.2.0
 underscore@1.0.10
 webapp@1.7.4
