@@ -1,7 +1,7 @@
 Package.describe({
   name: 'sylque:accounts-discourse',
   summary: 'A login service using Discourse SSO as a provider',
-  version: '0.0.5',
+  version: '0.0.6',
   git: 'https://github.com/sylque/accounts-discourse',
   documentation: 'README.md'
 })

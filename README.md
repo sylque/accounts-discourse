@@ -8,7 +8,17 @@ A Meteor package to use Discourse as a login provider.
 meteor add sylque:accounts-discourse
 ```
 
-## Setup
+## Infrastructure Setup
+
+This package needs to know the public url of the Meteor application. To get it, it will look:
+- first in the `x-forwarded-host` and `x-forwarded-proto` headers of server requests,
+- second, in the `ROOT_URL` server environment variable.
+
+So, if your Meteor application sits behind a proxy, you need either:
+- to make sure it sets the `x-forwarded-host` and `x-forwarded-proto` headers, or
+- to set the `ROOT_URL` server environment variable.
+
+## Software Setup
 
 ```javascript
 // startup/server/initServices.js
