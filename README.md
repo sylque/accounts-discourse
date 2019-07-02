@@ -47,6 +47,8 @@ ServiceConfiguration.configurations.upsert(
 )
 ```
 
+I recommend storing `secret` and `url` outside of the source code, in a `settings.json` file. See more [here](https://docs.meteor.com/api/core.html#Meteor-settings).  
+
 ## Usage
 
 To login with Discourse, load your application with a `discourse-login=true`
