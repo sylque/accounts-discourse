@@ -10,13 +10,10 @@ meteor add sylque:accounts-discourse
 
 ## Infrastructure Setup
 
-This package needs to know the public url of the Meteor application. To get it, it will look:
-- first in the `x-forwarded-host` and `x-forwarded-proto` headers of server requests,
-- second, in the `ROOT_URL` server environment variable.
-
-So, if your Meteor application sits behind a proxy, you need either:
-- to make sure it sets the `x-forwarded-host` and `x-forwarded-proto` headers, or
-- to set the `ROOT_URL` server environment variable.
+This package needs to know the **public url** of the Meteor application. It will
+read it from the `ROOT_URL` server environment variable (which is done
+automatically in MUP and Galaxy). See more 
+[here](https://docs.meteor.com/api/core.html#Meteor-absoluteUrl).
 
 ## Software Setup
 
@@ -47,7 +44,9 @@ ServiceConfiguration.configurations.upsert(
 )
 ```
 
-I recommend storing `secret` and `url` outside of the source code, in a `settings.json` file. See more [here](https://docs.meteor.com/api/core.html#Meteor-settings).  
+I recommend storing `secret` and `url` outside of the source code, in a
+`settings.json` file. See more
+[here](https://docs.meteor.com/api/core.html#Meteor-settings).
 
 ## Usage
 
@@ -110,16 +109,17 @@ When using this package, after logging in, each user has this additional
 ```javascript
 {
   id, // Discourse user id (number)
-  username, // Discourse username (string)
-  name, // Full name from the Discourse user profile (string)
-  groups, // Coma-separated list of groups (string)
-  email, // Email address (string)
-  admin, // true if the user is admin (boolean)
-  moderator // true if the user is moderator (boolean)
+    username, // Discourse username (string)
+    name, // Full name from the Discourse user profile (string)
+    groups, // Coma-separated list of groups (string)
+    email, // Email address (string)
+    admin, // true if the user is admin (boolean)
+    moderator // true if the user is moderator (boolean)
 }
 ```
 
-No other fields are added or updated. If you need a service-agnostic `user.name` field, use this server-side code:
+No other fields are added or updated. If you need a service-agnostic `user.name`
+field, use this server-side code:
 
 ```javascript
 import { Accounts } from 'meteor/accounts-base'
@@ -152,4 +152,4 @@ Remember that you should never use the `profile` field of Meteor.users. See why
 
 ## License
 
-[Fair Source 30](LICENSE) (additional information [here](https://fair.io/))
+[MIT](LICENSE)
