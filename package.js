@@ -1,7 +1,7 @@
 Package.describe({
-  name: 'sylque:accounts-discourse',
+  name: 'focallocal:accounts-discourse',
   summary: 'A login service using Discourse SSO as a provider',
-  version: '0.0.7',
+  version: '0.0.8',
   git: 'https://github.com/sylque/accounts-discourse',
   documentation: 'README.md'
 })
